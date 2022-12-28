@@ -24,7 +24,8 @@ class User < ApplicationRecord
   def feed
     following_ids = "SELECT following_id FROM follows WHERE follower_id = :user_id"
     ClockIn
-      .where("(user_id IN (#{following_ids}) OR user_id = :user_id) and created_at >= DATETIME('now','-7 day')", user_id: id)
+      .where("user_id IN (#{following_ids}) OR user_id = :user_id", user_id: id)
+      .where("created_at >= DATETIME('now','-7 day')")
       .order(duration: :desc)
   end
 end

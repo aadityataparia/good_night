@@ -1,14 +1,14 @@
 class ClockIn < ApplicationRecord
   belongs_to :user
 
-  before_save :calculate_size
-  validates :to, presence: true
+  before_save :calculate_duration
   validates :from, presence: true
+  validates :to, presence: true
   validate :check_times
 
   private
 
-  def calculate_size
+  def calculate_duration
     self.duration = (to - from) / 60
   end
 

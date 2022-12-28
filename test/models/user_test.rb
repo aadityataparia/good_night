@@ -17,6 +17,7 @@ class UserTest < ActiveSupport::TestCase
     clock_in_1 = michael.clock_in("2021-01-01", "2021-01-02")
     clock_in_2 = michael.clock_in("2021-01-01", "2021-01-02")
 
+    assert clock_in_1.duration == 1440
     assert michael.clock_ins.size.equal? 2
     assert michael.clock_ins.first.id.equal? clock_in_2.id
     assert michael.clock_ins[1].id.equal? clock_in_1.id
@@ -32,11 +33,18 @@ class UserTest < ActiveSupport::TestCase
     assert michael.followings.first.id.equal? archer.id
   end 
 
-  test "fail to follow" do
+  test "fail to follow unknown user" do
     michael = User.create(name: "michael")
     fl = michael.follow(0)
     assert fl.errors.size > 0
     assert fl.errors.full_messages[0] == "Following must exist"
+  end 
+
+  test "fail to follow himself" do
+    michael = User.create(name: "michael")
+    fl = michael.follow(michael.id)
+    assert fl.errors.size > 0
+    assert fl.errors.full_messages[0] == "User can not follow themself"
   end 
 
   test "should unfollow" do
