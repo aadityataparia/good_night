@@ -13,7 +13,6 @@ gem "sqlite3", "~> 1.4"
 gem "puma", "~> 5.0"
 
 gem "pg"
-gem "jsonapi-resources"
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
