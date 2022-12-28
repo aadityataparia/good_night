@@ -10,7 +10,6 @@ class User < ApplicationRecord
     followed_users.create(following_id: other_user_id)
   end
 
-  # Unfollows a user.
   def unfollow(other_user_id)
     follow = followed_users.find_by(following_id: other_user_id)
     return false if not follow

@@ -3,6 +3,9 @@ class Follow < ApplicationRecord
   belongs_to :following, class_name: "User"
 
   validate :check_same
+
+  private
+
   def check_same
     errors.add(:base, "User can not follow themself") if follower_id == following_id
   end

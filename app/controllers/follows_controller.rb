@@ -1,6 +1,7 @@
 class FollowsController < ApplicationController
   def create
-    if current_user.follow(params[:following_id])
+    follow = current_user.follow(params[:following_id])
+    if follow.valid?
       render json: { status: :success, message: 'Follow successful' }
     else
       render json: { status: :error, error: follow.errors.full_messages.join(', ') }, status: 400
@@ -9,7 +10,7 @@ class FollowsController < ApplicationController
 
   def delete
     follow = current_user.unfollow(params[:following_id])
-    if follow
+    if follow and follow.valid?
       render json: { status: :success, message: 'Unfollow successful' }
     else
       render json: { status: :error, error: 'User does not follow the user' }, status: 404

@@ -1,10 +1,15 @@
 class ApplicationController < ActionController::API
+  class NotAuthorized < StandardError
+  end
+
+  rescue_from ApplicationController::NotAuthorized do |exception|
+    render status: :unauthorized
+  end
 
   def current_user
-    if params[:user_id].blank?
-      render json: {}, :status => :unauthorized
-    else
-      User.find(params[:user_id])
-    end
+    raise ApplicationController::NotAuthorized if not params[:user_id]
+    user = User.find(params[:user_id])
+    raise ApplicationController::NotAuthorized if not user
+    user
   end
 end

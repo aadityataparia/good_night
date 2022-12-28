@@ -1,7 +1,6 @@
 class ClockInsController < ApplicationController
   def index
-    clock_ins = current_user.clock_ins
-    render json: clock_ins.to_json
+    render json: current_user.clock_ins.to_json
   end
 
   def feed
@@ -10,7 +9,7 @@ class ClockInsController < ApplicationController
 
   def create
     clock_in = current_user.clock_in(params[:from], params[:to])
-    if clock_in.errors.size == 0
+    if clock_in.valid?
       render json: { status: :success, message: 'Clock in successful' }
     else
       render json: { status: :error, message: clock_in.errors.full_messages.join(', ') }, status: 400
